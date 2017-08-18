@@ -1,0 +1,16 @@
+server:
+  port: 8080
+  contextPath: /file-service
+logging:
+  file: logs/file-service-logging.log
+  level:
+    root: INFO
+    io.cultr.file: DEBUG
+spring:
+  jmx:
+    enabled: true
+  application:
+    name: file-service
+    version: 1.0.0
+  mvc:
+    throw-exception-if-no-handler-found: true

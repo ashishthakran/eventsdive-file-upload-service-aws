@@ -1,0 +1,74 @@
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false               
+      
+multipart:
+  maxFileSize: -1
+  maxRequestSize: 1024Mb
+
+amazon:
+  aws:
+    credentials:
+      accessKey: <AWS Access Key>
+      secretKey: <AWS Secret Key> 
+  s3:
+    bucket:
+      name: <AWS Bucket Name>
+      region: <AWS Bucket Region>
+    defaultBucket:
+      name: <AWS Default Bucket name>  # In case there are multiple buckets
+      region: <AWS Bucket Region>
+      path: <Bucket Path>
+    paths:
+      separator: /
+      events: event/photo/
+   
+hystrix:
+  command:
+    upload:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
+            interruptOnTimeout: true
+        timeout:
+          enabled: true
+      circuitBreaker:
+        enabled: true
+        sleepWindowInMilliseconds: 2000
+        errorThresholdPercentage: 50
+        requestVolumeThreshold: 10
+      metrics:
+        rollingStats:
+          timeInMilliseconds: 180000
+    download:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
+            interruptOnTimeout: true
+        timeout:
+          enabled: true
+      circuitBreaker:
+        enabled: true
+        sleepWindowInMilliseconds: 2000
+        errorThresholdPercentage: 50
+        requestVolumeThreshold: 10
+      metrics:
+        rollingStats:
+          timeInMilliseconds: 180000          
+  threadpool:
+    s3bucket:
+      coreSize: 100
+      maximumSize: 100
+      queueSizeRejectionThreshold: 5
+      keepAliveTimeMinutes: 1
+      allowMaximumSizeToDivergeFromCoreSize: true
+      metrics:
+        rollingStats:
+          timeInMilliseconds: 18000
+
